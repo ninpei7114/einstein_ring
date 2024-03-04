@@ -74,7 +74,7 @@ def train_model(net, criterion, optimizer, num_epochs, f_log, augmentation_name,
             else:
                 print_and_log(f_log, f" \n ({phase})")
                 net.eval()
-                result, position, regions = [], [], []
+                result = []
 
             ############################
             ## データの整形とモデルに入力 ##
@@ -89,7 +89,7 @@ def train_model(net, criterion, optimizer, num_epochs, f_log, augmentation_name,
                     images = np.concatenate((images, noring[0]))
                     targets = targets + noring[1]
                 else:
-                    images, targets, offset, region_info = _[0], _[1], _[2], _[3]
+                    images, targets = _[0], _[1]
 
                 images = torch.from_numpy(images).permute(0, 3, 1, 2)[:, :2, :, :]
                 images = images.to(device, dtype=torch.float)
@@ -114,8 +114,7 @@ def train_model(net, criterion, optimizer, num_epochs, f_log, augmentation_name,
                         print("\r" + str(iteration_val) + "/" + str(all_iter_val) + " ", end="")
                         iteration_val += 1
                         result.append(detect(*outputs).to("cpu").detach().numpy().copy())
-                        position.extend(offset)
-                        regions.extend(region_info)
+
                         save_training_val_loss.sum_iter_loss(loss_dic, "val")
 
         ###############
