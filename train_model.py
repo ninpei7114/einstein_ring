@@ -47,7 +47,7 @@ def train_model(net, criterion, optimizer, num_epochs, f_log, augmentation_name,
     ##########################################
 
     Val_num = len(glob.glob(f"{args.train_val_data_path}/val/*.png"))
-    NonRing_num, train_Ring_num = len(glob.glob(f"{args.train_val_data_path}/train/non_ring/*.png")), len(
+    NonRing_num, train_Ring_num = len(glob.glob(f"{args.train_val_data_path}/train/nonring/*.png")), len(
         glob.glob(f"{args.train_val_data_path}/train/ring/*.png")
     )
     dl_ring_train, dl_nonring = make_training_dataloader(args, train_Ring_num, NonRing_num)
