@@ -91,7 +91,7 @@ def train_model(net, criterion, optimizer, num_epochs, f_log, augmentation_name,
                 else:
                     images, targets = _[0], _[1]
 
-                images = torch.from_numpy(images).permute(0, 3, 1, 2)[:, :2, :, :]
+                images = torch.from_numpy(images).permute(0, 3, 1, 2)
                 images = images.to(device, dtype=torch.float)
                 targets = [ann.to(device, dtype=torch.float) for ann in targets]  # リストの各要素のテンソルをGPUへ
 
