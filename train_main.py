@@ -33,6 +33,7 @@ def parse_args():
     # 学習率
     parser.add_argument("--lr", type=float, default=1e-4)
     parser.add_argument("--weight_decay", type=float, default=0.001)
+    parser.add_argument("--init_random_state", type=int, default=123)
     # option
     parser.add_argument("--test_infer_false", action="store_false")
     parser.add_argument("--ring_select_false", action="store_false")
