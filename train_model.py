@@ -13,7 +13,6 @@ from make_figure import make_figure
 from training_sub import (
     EarlyStopping_f1_score,
     EarlyStopping_loss,
-    calc_fscore_val,
     management_loss,
     print_and_log,
     write_train_log,
