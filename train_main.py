@@ -63,9 +63,6 @@ def main(args):
         print("REMOVE FILES...")
         shutil.rmtree(args.savedir_path)
     os.makedirs(args.savedir_path, exist_ok=True)
-    default_val_size = np.array([150, 300, 600, 900, 1200, 1800, 2400, 3000])
-    for remove_size in args.Val_remove_size_list:
-        default_val_size = default_val_size[default_val_size != remove_size]
 
     ## 上下反転、回転、縮小、平行移動の4パターンの組み合わせでaugmentationをする。
     flip_list = [True]  # , False]
@@ -136,7 +133,6 @@ def main(args):
             "train_cfg": train_cfg,
             "device": device,
             "run": run,
-            "val_size": default_val_size,
         }
 
         ####################

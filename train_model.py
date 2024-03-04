@@ -20,9 +20,7 @@ from training_sub import (
 from utils.ssd_model import Detect
 
 
-def train_model(
-    net, criterion, optimizer, num_epochs, f_log, augmentation_name, args, train_cfg, device, run, val_size
-):
+def train_model(net, criterion, optimizer, num_epochs, f_log, augmentation_name, args, train_cfg, device, run):
     """モデルの学習を実行する関数
 
     Args:
