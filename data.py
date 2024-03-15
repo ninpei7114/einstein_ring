@@ -70,7 +70,7 @@ class NegativeSampler(torch.utils.data.sampler.Sampler):
 
 def make_training_dataloader(args, train_Ring_num, nonring_num):
     with tarfile.open(f"{args.train_val_data_path}/bubble_dataset_train_ring.tar", "w:gz") as tar:
-        tar.add(f"{args.train_val_data_path}/train/ring")
+        tar.add(f"{args.train_val_data_path}/train/lens")
     ## Training Ring の Dataloader を作成
     Training_Ring_web = (
         webdataset.WebDataset(f"{args.train_val_data_path}/bubble_dataset_train_ring.tar")
@@ -88,7 +88,7 @@ def make_training_dataloader(args, train_Ring_num, nonring_num):
     )
 
     with tarfile.open(f"{args.train_val_data_path}/bubble_dataset_train_nonring.tar", "w:gz") as tar:
-        tar.add(f"{args.train_val_data_path}/train/nonring/")
+        tar.add(f"{args.train_val_data_path}/train/nonlens/")
     NonRing_rsample = train_Ring_num / nonring_num
     NonRing_web_list = (
         webdataset.WebDataset(f"{args.train_val_data_path}/bubble_dataset_train_nonring.tar")
