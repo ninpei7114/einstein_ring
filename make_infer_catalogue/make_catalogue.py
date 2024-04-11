@@ -68,3 +68,4 @@ def main(args):
         w = astropy.wcs.WCS(hdu.header)
         bbox = calc_bbox(args, region, conf_thre)
         catalogue = make_infer_catalogue(bbox, w)
+        catalogue.to_csv(f"{args.result_path}/{region}/infer_catalogue.csv")
