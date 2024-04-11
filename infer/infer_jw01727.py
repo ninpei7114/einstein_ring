@@ -57,7 +57,7 @@ def main(args):
     os.makedirs(tarfile_dir, exist_ok=True)
     for region in region_l:
         start = time.time()
-        region_name = region.split(".")[0]
+        region_name = region.split("/")[-1].split(".")[0]
         print(f"\n{region_name=}")
         tarfile_name = f"{tarfile_dir}/{region_name}_dataset.tar"
         if not os.path.exists(tarfile_name):
