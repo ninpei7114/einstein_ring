@@ -69,3 +69,8 @@ def main(args):
         bbox = calc_bbox(args, region, conf_thre)
         catalogue = make_infer_catalogue(bbox, w)
         catalogue.to_csv(f"{args.result_path}/{region}/infer_catalogue.csv")
+
+
+if __name__ == "__main__":
+    args = parse_args()
+    main(args)
