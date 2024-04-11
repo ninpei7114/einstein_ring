@@ -81,7 +81,8 @@ def main(args):
             num_workers=2,
             pin_memory=True,
         )
-        all_iter = int(len(glob.glob(f"{args.tarfile_dir}/{region_name}/*")) / 128)
+        print("Making DataLoader is done")
+        all_iter = int(len(glob.glob(f"{tarfile_dir}/{region_name}/*")) / 128)
         iteration = 0
         ################
         ## INFER PART ##
