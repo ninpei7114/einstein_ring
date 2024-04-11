@@ -2,7 +2,7 @@ import sys
 import glob
 
 import argparse
-import astropy
+import astropy.io.fits
 import numpy as np
 import pandas as pd
 import torch
