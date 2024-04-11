@@ -94,7 +94,7 @@ def main(args):
         print("START INFER")
         for _ in dl_region:
             images, offset, region_info = _[0], _[1], _[2]
-            images = torch.from_numpy(images).permute(0, 3, 1, 2)[:, :2, :, :]
+            images = torch.from_numpy(images).permute(0, 3, 1, 2)
             images = images.to(device, dtype=torch.float)
 
             with torch.no_grad():
