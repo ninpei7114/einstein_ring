@@ -54,9 +54,7 @@ def make_infer_catalogue(bbox, w):
 def parse_args():
     parser = argparse.ArgumentParser(description="PyTorch Implementation of SSD")
     parser.add_argument("result_path", type=str, help="model's path to infer")
-    parser.add_argument("LMC_data_path", help="LMC data path")
-    parser.add_argument("SMC_data_path", help="SMC data path")
-    parser.add_argument("Cygnus_data_path", help="Cyg data path")
+    parser.add_argument("data_dir", help="LMC data path")
 
     return parser.parse_args()
 
