@@ -58,9 +58,9 @@ def main(args):
     os.makedirs(tarfile_dir, exist_ok=True)
     for region in region_l:
         start = time.time()
+        region_name = region.split("/")[-1].split(".")[0]
         print(f"\n{region_name=}")
 
-        region_name = region.split("/")[-1].split(".")[0]
         os.makedirs(f"{args.tarfile_dir}/{region_name}", exist_ok=True)
         shutil.copy(f"{args.data_dir}/png_file/*{region_name}.png", f"{args.tarfile_dir}/{region_name}")
 
