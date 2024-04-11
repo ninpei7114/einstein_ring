@@ -4,6 +4,7 @@ import os
 import sys
 import tarfile
 import time
+import shutil
 
 import numpy as np
 import torch
@@ -57,12 +58,16 @@ def main(args):
     os.makedirs(tarfile_dir, exist_ok=True)
     for region in region_l:
         start = time.time()
-        region_name = region.split("/")[-1].split(".")[0]
         print(f"\n{region_name=}")
+
+        region_name = region.split("/")[-1].split(".")[0]
+        os.makedirs(f"{args.tarfile_dir}/{region_name}", exist_ok=True)
+        shutil.copy(f"{args.data_dir}/png_file/*{region_name}.png", f"{args.tarfile_dir}/{region_name}")
+
         tarfile_name = f"{tarfile_dir}/{region_name}_dataset.tar"
         if not os.path.exists(tarfile_name):
             with tarfile.open(tarfile_name, "w:gz") as tar:
-                tar.add(f"{args.data_dir}/png_file/*{region_name}.png")
+                tar.add(f"{args.tarfile_dir}/{region_name}")
 
         Dataset_test = (
             webdataset.WebDataset(tarfile_name).decode("pil").to_tuple("png", "__key__").map(preprocess_validation)
@@ -74,7 +79,7 @@ def main(args):
             num_workers=2,
             pin_memory=True,
         )
-        all_iter = int(len(glob.glob(f"{args.data_dir}/png_file/*{region_name}.png")) / 128)
+        all_iter = int(len(glob.glob(f"{args.tarfile_dir}/{region_name}/*")) / 128)
         iteration = 0
         ################
         ## INFER PART ##
@@ -101,6 +106,7 @@ def main(args):
         np.save(f"{args.result_save_dir}/{model_ver}/{region_name}/result.npy", result)
 
         print(f"elapsed_time:{time.time() - start}")
+        shutil.rmtree(f"{args.tarfile_dir}/{region_name}")
 
 
 if __name__ == "__main__":
