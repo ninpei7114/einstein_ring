@@ -65,7 +65,7 @@ def main(args):
     conf_thre = 0.5
     region_l = glob.glob(args.data_dir + "/fits_file/*")
     for region in region_l:
-        hdu = astropy.io.fits.open(f"{args.data_dir}/{region.split('-')[0][3:]}/fits_file/{region}.fits")
+        hdu = astropy.io.fits.open(f"{args.data_dir}/{region.split('-')[0][3:]}/fits_file/{region}.fits")[0]
         w = astropy.wcs.WCS(hdu.header)
         bbox = calc_bbox(args, region, conf_thre)
         catalogue = make_infer_catalogue(bbox, w)
