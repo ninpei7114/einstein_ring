@@ -12,6 +12,7 @@ import wandb
 import webdataset
 
 from infer_sub import od_collate_fn_validation, preprocess_validation
+from resize_data import resize_png
 
 sys.path.append("../")
 from utils.ssd_model import SSD, Detect
@@ -66,6 +67,8 @@ def main(args):
         for _ in region_png_path:
             shutil.copy(_, f"{tarfile_dir}/{region_name}")
         os.remove(f"{tarfile_dir}/{region_name}/{region_name}.png")
+        resize_png(f"{tarfile_dir}/{region_name}")
+
         tarfile_name = f"{tarfile_dir}/{region_name}_dataset.tar"
         if not os.path.exists(tarfile_name):
             with tarfile.open(tarfile_name, "w:gz") as tar:
