@@ -65,7 +65,7 @@ def main(args):
         region_png_path = glob.glob(f"{args.data_dir}/png_file/*{region_name}.png")
         for _ in region_png_path:
             shutil.copy(_, f"{tarfile_dir}/{region_name}")
-
+        os.remove(f"{tarfile_dir}/{region_name}/{region_name}.png")
         tarfile_name = f"{tarfile_dir}/{region_name}_dataset.tar"
         if not os.path.exists(tarfile_name):
             with tarfile.open(tarfile_name, "w:gz") as tar:
