@@ -62,7 +62,9 @@ def main(args):
         print(f"\n{region_name=}")
 
         os.makedirs(f"{tarfile_dir}/{region_name}", exist_ok=True)
-        shutil.copy(f"{args.data_dir}/png_file/*{region_name}.png", f"{tarfile_dir}/{region_name}")
+        region_png_path = glob.glob(f"{args.data_dir}/png_file/*{region_name}.png")
+        for _ in region_png_path:
+            shutil.copy(_, f"{tarfile_dir}/{region_name}")
 
         tarfile_name = f"{tarfile_dir}/{region_name}_dataset.tar"
         if not os.path.exists(tarfile_name):
@@ -106,7 +108,7 @@ def main(args):
         np.save(f"{args.result_save_dir}/{model_ver}/{region_name}/result.npy", result)
 
         print(f"elapsed_time:{time.time() - start}")
-        shutil.rmtree(f"{args.tarfile_dir}/{region_name}")
+        shutil.rmtree(f"{tarfile_dir}/{region_name}")
 
 
 if __name__ == "__main__":
