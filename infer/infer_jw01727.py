@@ -74,45 +74,48 @@ def main(args):
             with tarfile.open(tarfile_name, "w:gz") as tar:
                 tar.add(f"{tarfile_dir}/{region_name}")
 
-        Dataset_test = (
-            webdataset.WebDataset(tarfile_name).decode("pil").to_tuple("png", "__key__").map(preprocess_validation)
-        )
-        dl_region = torch.utils.data.DataLoader(
-            Dataset_test,
-            collate_fn=od_collate_fn_validation,
-            batch_size=128,
-            num_workers=2,
-            pin_memory=True,
-        )
-        print("Making DataLoader is done")
-        all_iter = int(len(glob.glob(f"{tarfile_dir}/{region_name}/*")) / 128)
-        iteration = 0
-        ################
-        ## INFER PART ##
-        ################
-        position, result, regions = [], [], []
-        print("START INFER")
-        for _ in dl_region:
-            images, offset, region_info = _[0], _[1], _[2]
-            images = torch.from_numpy(images).permute(0, 3, 1, 2)
-            images = images.to(device, dtype=torch.float)
+            Dataset_test = (
+                webdataset.WebDataset(tarfile_name).decode("pil").to_tuple("png", "__key__").map(preprocess_validation)
+            )
+            dl_region = torch.utils.data.DataLoader(
+                Dataset_test,
+                collate_fn=od_collate_fn_validation,
+                batch_size=128,
+                num_workers=2,
+                pin_memory=True,
+            )
+            print("Making DataLoader is done")
+            all_iter = int(len(glob.glob(f"{tarfile_dir}/{region_name}/*")) / 128)
+            iteration = 0
+            ################
+            ## INFER PART ##
+            ################
+            position, result, regions = [], [], []
+            print("START INFER")
+            for _ in dl_region:
+                images, offset, region_info = _[0], _[1], _[2]
+                images = torch.from_numpy(images).permute(0, 3, 1, 2)
+                images = images.to(device, dtype=torch.float)
 
-            with torch.no_grad():
-                outputs, _ = net_w(images)
-                print("\r" + str(iteration) + "/" + str(all_iter) + " ", end="")
-                iteration += 1
-                result.append(detect(*outputs).to("cpu").detach().numpy().copy().astype(np.float32))
-                position.extend(offset)
-                regions.extend(region_info)
+                with torch.no_grad():
+                    outputs, _ = net_w(images)
+                    print("\r" + str(iteration) + "/" + str(all_iter) + " ", end="")
+                    iteration += 1
+                    result.append(detect(*outputs).to("cpu").detach().numpy().copy().astype(np.float32))
+                    position.extend(offset)
+                    regions.extend(region_info)
 
-        position = np.array(position)
-        result = np.concatenate(result)
-        os.makedirs(f"{args.result_save_dir}/{model_ver}/{region_name}", exist_ok=True)
-        np.save(f"{args.result_save_dir}/{model_ver}/{region_name}/position.npy", position)
-        np.save(f"{args.result_save_dir}/{model_ver}/{region_name}/result.npy", result)
+            position = np.array(position)
+            result = np.concatenate(result)
+            os.makedirs(f"{args.result_save_dir}/{model_ver}/{region_name}", exist_ok=True)
+            np.save(f"{args.result_save_dir}/{model_ver}/{region_name}/position.npy", position)
+            np.save(f"{args.result_save_dir}/{model_ver}/{region_name}/result.npy", result)
 
-        print(f"elapsed_time:{time.time() - start}")
-        shutil.rmtree(f"{tarfile_dir}/{region_name}")
+            print(f"elapsed_time:{time.time() - start}")
+            shutil.rmtree(f"{tarfile_dir}/{region_name}")
+        else:
+            print("Already exists tarfile")
+            continue
 
 
 if __name__ == "__main__":
